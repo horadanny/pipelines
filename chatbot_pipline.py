@@ -13,7 +13,7 @@ class Pipeline:
     def __init__(self):
         self.name = "Custom Chat Pipeline"
         self.valves = self.Valves()
-        self.api_endpoint = "http://172.25.240.1:5000/v1/chat/completions"
+        self.api_endpoint = "http://localhost:5000/v1/chat/completions"
 
     async def on_startup(self):
         logging.info(f"Pipeline '{self.name}' started.")
