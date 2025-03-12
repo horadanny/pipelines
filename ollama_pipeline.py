@@ -21,7 +21,7 @@ import aiohttp
 import os
 
 from fastapi import FastAPI, HTTPException
-from langchain.schema.document import Document
+from llama_index.core import Document
 from pydantic import BaseModel
 import json
 import loggin
