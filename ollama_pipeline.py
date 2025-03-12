@@ -122,7 +122,6 @@ class Pipeline:
 
         self.documents = get_metadata_tables()
         self.index = VectorStoreIndex.from_documents(self.documents)
-        pass
 
     async def on_shutdown(self):
         # This function is called when the server is stopped.
