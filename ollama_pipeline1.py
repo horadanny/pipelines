@@ -78,7 +78,7 @@ class Pipeline:
         self.retriever = None
         self.valves = self.Valves(
             **{
-                "LLAMAINDEX_OLLAMA_BASE_URL": os.getenv("LLAMAINDEX_OLLAMA_BASE_URL", "http://ollama.default.svc.cluster.local:11434"),
+                "LLAMAINDEX_OLLAMA_BASE_URL": os.getenv("LLAMAINDEX_OLLAMA_BASE_URL", "http://localhost:11434"),
                 "LLAMAINDEX_MODEL_NAME": os.getenv("LLAMAINDEX_MODEL_NAME", "llama3.2:1b"),
                 "LLAMAINDEX_EMBEDDING_MODEL_NAME": os.getenv("LLAMAINDEX_EMBEDDING_MODEL_NAME", "nomic-embed-text"),
             }
@@ -135,7 +135,7 @@ class Pipeline:
             "Answer: "
 
         qa_prompt = PromptTemplate(template=prompt_template)
-        """
+      
         qa_prompt = PromptTemplate(
             "Context information is below.\n"
             "---------------------\n"
@@ -165,12 +165,12 @@ class Pipeline:
             llm=llm,
             qa_prompt=qa_prompt,
         )
+          """
 
-
-        #query_engine = self.index.as_query_engine(streaming=True)
-        #response = query_engine.query(user_message)
-        #return response.response_gen
-
+        query_engine = self.index.as_query_engine(streaming=True)
+        response = query_engine.query(user_message)
+        return response.response_gen
+          """
         try:
             response = query_engine.custom_query(user_message)
 
@@ -180,7 +180,7 @@ class Pipeline:
             else:
                 # final_response = response.response
                 return str(response)
-            
+           """   
         except aiohttp.ClientPayloadError as e:
             return f"ClientPayloadError from ollama server: {e}"
         
