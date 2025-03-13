@@ -10,7 +10,7 @@ requirements: llama-index, llama-index-llms-ollama, llama-index-embeddings-ollam
 from pydantic import BaseModel
 from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
-from llama_index.llms.openai_like import OpenAILike
+#from llama_index.llms.openai_like import OpenAILike
 from llama_index.core import Settings, VectorStoreIndex, PromptTemplate
 from llama_index.core.query_engine import CustomQueryEngine
 from llama_index.readers.json import JSONReader
