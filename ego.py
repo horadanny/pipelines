@@ -104,7 +104,7 @@ class Pipeline:
         global documents, index
 
         #self.documents = reader.load_data(input_file=metadata_json, extra_info={})
-        self.documents = Document(txt=metadata_str)
+        self.documents = [Document(txt=metadata_str)]
         self.index = VectorStoreIndex.from_documents(self.documents)
         self.retriever = self.index.as_retriever()
 
