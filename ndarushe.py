@@ -12,13 +12,12 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
 from llama_index.core import Settings, VectorStoreIndex, PromptTemplate
 from llama_index.core.query_engine import CustomQueryEngine
-from llama_index.readers.json import JSONReader
 from llama_index.core.retrievers import BaseRetriever
 #from server.om_server import get_metadata_tables
 from typing import List, Union, Generator, Iterator
 import aiohttp
 import os
-#from llama_index.core import Document
+from llama_index.core import Document
 #from langchain.schema.document import Document
 from pydantic import BaseModel
 
