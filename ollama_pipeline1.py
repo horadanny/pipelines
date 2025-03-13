@@ -72,7 +72,7 @@ class Pipeline:
         LLAMAINDEX_EMBEDDING_MODEL_NAME: str
 
     def __init__(self):
-        self.name = "Ollama-ChatBot-Pipeline"
+        self.name = "Ollama-weeee"
         self.documents = None
         self.index = None
         self.retriever = None
