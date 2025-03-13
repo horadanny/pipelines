@@ -20,8 +20,8 @@ import os
 
 
 
-JWT_TOKEN = ""
-SERVER_URL = "http://openmetadata.openmetadata.svc.cluster.local:8585/api/v1/tables?limit=10"
+JWT_TOKEN = "eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvcGVuLW1ldGFkYXRhLm9yZyIsInN1YiI6ImluZ2VzdGlvbi1ib3QiLCJyb2xlcyI6WyJJbmdlc3Rpb25Cb3RSb2xlIl0sImVtYWlsIjoiaW5nZXN0aW9uLWJvdEBvcGVuLW1ldGFkYXRhLm9yZyIsImlzQm90Ijp0cnVlLCJ0b2tlblR5cGUiOiJCT1QiLCJpYXQiOjE3NDE4OTIwNzAsImV4cCI6bnVsbH0.1cPq0ldjXGfBknqaWE_PTmUWfZI0Vc52Akpkq0eD_5OoKlCXDCDH1CI_fVepi2doJ52_0QZAmhtzKBjFXB8n0r_lnCFC7bhk0PMkRo7Q8fkSaJfu3AyKxVxYuzHV1x9IZYHS4Y_f_KQk5yH_cxK8W_ZFGrMunS43amE_6z5tYiEzjNhNTaKWowIbC7UN2yl020RAFB_g_DzdIBEfW6LYJVoPrsHAspywPaYRSFkvpg8GXmQQIMduzwjBBn6O0h_zM45aWhlMHBJwDsY2TXXOjwuyq7D3zH17nKbclqDGnicoL9l4BfKl1b8MeUvV0PFOeJCdjlG_lQ119-gLTdO-Xg"
+SERVER_URL = "http://openmetadata.om.svc.cluster.local:8585/api/v1/tables?limit=10"
 async def get_metadata_from_openmetadata_server():
     try:
         headers = {
