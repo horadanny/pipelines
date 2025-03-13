@@ -159,7 +159,6 @@ class Pipeline:
 
         llm = Ollama(
             model=self.valves.LLAMAINDEX_MODEL_NAME,
-            base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
         )
         query_engine = RAGStringQueryEngine(
             retriever=self.retriever,
