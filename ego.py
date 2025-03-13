@@ -11,10 +11,8 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
 from llama_index.core import Settings, VectorStoreIndex, PromptTemplate, Document
 from llama_index.core.query_engine import CustomQueryEngine
-#from llama_index.readers.json import JSONReader
 from llama_index.core.retrievers import BaseRetriever
 from pydantic import BaseModel
-#from server.om_server import get_metadata_tables
 from typing import List, Union, Generator, Iterator
 import aiohttp
 import json
@@ -22,9 +20,9 @@ import os
 
 
 
-JWT_TOKEN = "eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvcGVuLW1ldGFkYXRhLm9yZyIsInN1YiI6ImluZ2VzdGlvbi1ib3QiLCJyb2xlcyI6WyJJbmdlc3Rpb25Cb3RSb2xlIl0sImVtYWlsIjoiaW5nZXN0aW9uLWJvdEBvcGVuLW1ldGFkYXRhLm9yZyIsImlzQm90Ijp0cnVlLCJ0b2tlblR5cGUiOiJCT1QiLCJpYXQiOjE3NDE0ODcwODUsImV4cCI6bnVsbH0.QeHxcKW7LQGaVVnGr9XyZJbvw3-k3ZF1_cHLqIWKyazaPNwsCs0feAphBSwDCs_MvwnWx_k0_hpOth8BBVPccvzv1ZMS-SxYoSF6TvONuchI0s9Z_8l7o4UJcJUQzi_AOjFssvxTwN1NDhZE7N6UX7yDM_9KcKZkS5O9MGNWOkfnqHtA7lM6L6-Yu5oVo9MGMU9PDycm8hQteIdStJXoPM7fXzK6IxghrFuqJ7upXLLqhuFWUyvm6y9H3mUX2Qhnjdbkj6bUx1hpugdWRXu_XWuJPS0WVehGBib2oiUgCFRet5GaLdzYhPke1U-TGBiDXnC5F7rUmplI-saR3hfoXA"
-
-async def get_metadata_tables():
+JWT_TOKEN = ""
+SERVER_URL = "http://openmetadata.openmetadata.svc.cluster.local:8585/api/v1/tables?limit=10"
+async def get_metadata_from_openmetadata_server():
     try:
         headers = {
             "Authorization": f"Bearer {JWT_TOKEN}",
@@ -32,7 +30,7 @@ async def get_metadata_tables():
         
         async with aiohttp.ClientSession() as session:
             async with session.get(
-                "http://localhost:8585/api/v1/tables?limit=10",
+                SERVER_URL,
                 headers=headers,
                 timeout=10
             ) as response:
@@ -40,13 +38,13 @@ async def get_metadata_tables():
                 return await response.json()
     
     except aiohttp.ClientError as e:
-        return f"ClientConnectionError: {e}"
+        return f"ClientConnectionError from OpenMetadata server: {e}"
     except aiohttp.ClientPayloadError as e:
-        return f"ClientPayloadError: {e}"
+        return f"ClientPayloadError from OpenMetadata server: {e}"
     except aiohttp.ClientResponseError as e:
-        return f"ClientResponseError: {e}"
+        return f"ClientResponseError from OpenMetadata server: {e}"
     except Exception as e:
-        return f"Unexpected error: {e}"
+        return f"Unexpected error from OpenMetadata server: {e}"
 
 
 class RAGStringQueryEngine(CustomQueryEngine):
@@ -98,7 +96,7 @@ class Pipeline:
             base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
         )
         #reader = JSONReader(levels_back=0, clean_json=True)
-        metadata_json = await get_metadata_tables()
+        metadata_json = await get_metadata_from_openmetadata_server()
         metadata_str = json.dumps(metadata_json)
         # This function is called when the server is started.
         global documents, index
@@ -115,17 +113,15 @@ class Pipeline:
     def pipe(
         self, user_message: str, model_id: str, messages: List[dict], body: dict
     ) -> Union[str, Generator, Iterator]:
-        # This is where you can add your custom RAG pipeline.
-        # Typically, you would retrieve relevant information from your knowledge base and synthesize it to generate a response.
-
-        prompt_template = """"
-            Context information is below.\n"
+        
+        qa_prompt = PromptTemplate(
+            "Context information is below.\n"
             "---------------------\n"
             "{context_str}\n"
             "---------------------\n"
             "You are a helpful AI Assistant providing company specific knowledge to a new employee."
             "This knowledge is from metadata from the OpenMetadata server."
-            Respond accurately, relying on the available metadata information.
+            "Respond accurately, relying on the available metadata information."
             "If the user asks about a specific table, database, or date, ensure you specify its name and reference relevant metadata when applicable."
             "Generate human readable output, avoid creating output with gibberish text."
             "Generate only the requested output, don't include any other language before or after the requested output."
@@ -137,8 +133,7 @@ class Pipeline:
             "answer the query.\n"
             "Query: {query_str}\n"
             "Answer: "
-        """
-        qa_prompt = PromptTemplate(template=prompt_template)
+        )
 
         query_engine = RAGStringQueryEngine(
             retriever=self.retriever,
@@ -162,13 +157,13 @@ class Pipeline:
                 return str(response)
             
         except aiohttp.ClientPayloadError as e:
-            return f"ClientPayloadError: {e}"
+            return f"ClientPayloadError from ollama server: {e}"
         
         except aiohttp.ClientConnectionError as e:
-            return f"ClientConnectionError: {e}"
+            return f"ClientConnectionError from ollama server: {e}"
 
         except aiohttp.ClientResponseError as e:
-            return f"ClientResponseError: {e}"
+            return f"ClientResponseError from ollama server: {e}"
         
         except Exception as e:
-            return f"Unexpected error: {e}"
+            return f"Unexpected error from ollama server: {e}"
