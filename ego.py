@@ -86,10 +86,10 @@ class Pipeline:
 
     async def on_startup(self):
 
-        #Settings.embed_model = OllamaEmbedding(
-        #    model_name=self.valves.LLAMAINDEX_EMBEDDING_MODEL_NAME,
-        #    base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
-        #)
+        Settings.embed_model = OllamaEmbedding(
+            model_name=self.valves.LLAMAINDEX_EMBEDDING_MODEL_NAME,
+            base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
+        )
         Settings.llm = Ollama(
             model=self.valves.LLAMAINDEX_MODEL_NAME,
             base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
