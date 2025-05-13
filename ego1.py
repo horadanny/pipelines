@@ -48,6 +48,23 @@ class Pipeline:
             base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
         )
 
+        data_dir = "/app/backend/data"
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+            print(f"Created directory: {data_dir}")
+    
+        try:
+            self.documents = SimpleDirectoryReader(data_dir).load_data()
+            if not self.documents:
+                print(f"Warning: No documents found in {data_dir}")
+            else:
+                print(f"Loaded {len(self.documents)} documents from {data_dir}")
+                self.index = VectorStoreIndex.from_documents(self.documents)
+        except Exception as e:
+            print(f"Error loading documents: {str(e)}")
+            self.documents = []
+            self.index = None
+
         # This function is called when the server is started.
         global documents, index
 
