@@ -38,7 +38,7 @@ from metadata.generated.schema.entity.data.report import Report
 from metadata.generated.schema.entity.services.ingestionPipelines.ingestionPipeline import (
     IngestionPipeline,
 )
-from metadata.generated.schema.entity.messaging.topic import Topic
+#from metadata.generated.schema.entity.messaging.topic import Topic
 
 
 class Pipeline:
