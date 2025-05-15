@@ -95,7 +95,7 @@ class Pipeline:
             ),
         )
         self.metadata = OpenMetadata(conn)
-        table_mixin = OMetaTableMixin(self.metadata)
+        table_mixin = OMetaTableMixin()
 
         # 3) collect docs across your seven APIs
         # — Databases
