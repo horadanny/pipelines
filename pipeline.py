@@ -5,7 +5,7 @@ date: 2025-05-15
 version: 1.4
 license: MIT
 description: A pipeline for RAG over OpenMetadata using Llama Index + Ollama.
-requirements: llama-index, llama-index-llms-ollama, llama-index-embeddings-ollama, openmetadata-ingestion, pydantic
+requirements: llama-index, llama-index-llms-ollama, llama-index-embeddings-ollama, openmetadata-ingestion==1.7.0.0, pydantic
 """
 
 import os
@@ -32,12 +32,12 @@ from metadata.ingestion.ometa.mixins.table_mixin import OMetaTableMixin
 # Entity classes
 from metadata.generated.schema.entity.data.database import Database
 from metadata.generated.schema.entity.data.table import Table
-from metadata.generated.schema.entity.data.metric import Metric
-from metadata.generated.schema.entity.data.dashboard import Dashboard
-from metadata.generated.schema.entity.data.report import Report
-from metadata.generated.schema.entity.services.ingestionPipelines.ingestionPipeline import (
-    IngestionPipeline,
-)
+#from metadata.generated.schema.entity.data.metric import Metric
+#from metadata.generated.schema.entity.data.dashboard import Dashboard
+#from metadata.generated.schema.entity.data.report import Report
+#from metadata.generated.schema.entity.services.ingestionPipelines.ingestionPipeline import (
+#    IngestionPipeline,
+#)
 #from metadata.generated.schema.entity.messaging.topic import Topic
 
 
