@@ -5,14 +5,16 @@ date: 2025-05-15
 version: 1.4
 license: MIT
 description: A pipeline for RAG over OpenMetadata using Llama Index + Ollama.
-requirements: llama-index-core, llama-index-llms-ollama, llama-index-embeddings-ollama, pydantic>=2.0, aiohttp
+requirements: llama-index-core, llama-index-llms-ollama, llama-index-embeddings-ollama, pydantic>=2.0, aiohttp, httpx, time
 """
 
-import os
-import json
-from typing import Dict, List, Union, Generator, Iterator
-
 import aiohttp
+import httpx
+import json
+import os
+import time
+from httpx import ReadTimeout
+from typing import Dict, List, Union, Generator, Iterator
 from pydantic import BaseModel
 
 from llama_index.embeddings.ollama import OllamaEmbedding
@@ -96,14 +98,19 @@ class Pipeline:
 
     async def on_startup(self):
         """Configure Ollama, connect to OpenMetadata, fetch samples, build index."""
+
         # 1) wire up Ollama in llama-index
+        timeout = httpx.Timeout(300.0, read=300.0, write=300.0)
+        http_client = httpx.Client(timeout=timeout)
         Settings.embed_model = OllamaEmbedding(
             model_name=self.valves.LLAMAINDEX_EMBEDDING_MODEL_NAME,
             base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
+            client=http_client,
         )
         Settings.llm = Ollama(
             model=self.valves.LLAMAINDEX_MODEL_NAME,
             base_url=self.valves.LLAMAINDEX_OLLAMA_BASE_URL,
+            client=http_client,
         )
 
         # 2) Fetch raw metadata
@@ -147,4 +154,16 @@ class Pipeline:
         # Print logs
         print("chat history:", messages)
         print("incoming:", user_message)
-        return self.chat_engine.chat(user_message)
+
+        max_retries = 2
+        for attempt in range(max_retries + 1):
+            try:
+                return self.chat_engine.chat(user_message)
+            except ReadTimeout:
+                if attempt < max_retries:
+                    wait = 2 ** attempt
+                    print(f"ReadTimeout, retrying in {wait}s (attempt {attempt+1})")
+                    time.sleep(wait)
+                else:
+                    return "⚠️ The model did not respond in time. Please try again."
+       
