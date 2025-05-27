@@ -46,12 +46,12 @@ async def fetch_all_tables(endpoint: str, headers: Dict[str, str], limit: int = 
 # -----------------------------------------------------------------------------
 # Parse raw JSON into TextNode chunks
 # -----------------------------------------------------------------------------
-def parse_tables_to_nodes(raw_tables: List[Dict]) -> List[TextNode]:
+def parse_tables_to_nodes(raw_tables: List[Dict]) -> List:
     """
     Given a list of raw table JSON dicts, return a flat list of parsed nodes (dict or TextNode) via JSONNodeParser.
     """
     parser = JSONNodeParser()
-    all_nodes: List[TextNode] = []
+    all_nodes = []
     for tbl in raw_tables:
         # Create a Document wrapping raw JSON
         json_doc = Document(id_=tbl.get("fullyQualifiedName"), text=json.dumps(tbl))
