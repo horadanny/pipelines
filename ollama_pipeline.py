@@ -5,7 +5,7 @@ date: 2025-05-15
 version: 1.4
 license: MIT
 description: A pipeline for RAG over OpenMetadata using Llama Index + Ollama.
-requirements: llama-index-core, llama-index-llms-ollama, llama-index-embeddings-ollama, pydantic>=2.0, aiohttp, httpx, time
+requirements: llama-index-core, llama-index-llms-ollama, llama-index-embeddings-ollama, pydantic>=2.0, aiohttp, httpx
 """
 
 import aiohttp
