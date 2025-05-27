@@ -15,7 +15,7 @@ from typing import Dict, List, Union, Generator, Iterator
 import aiohttp
 from pydantic import BaseModel
 
-rom llama_index.embeddings.ollama import OllamaEmbedding
+from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
 from llama_index.core import Document, VectorStoreIndex, PromptTemplate
 from llama_index.core import Settings
@@ -108,7 +108,7 @@ class Pipeline:
 
         # 2) Fetch raw metadata
         table_endpoint = self.valves.OM_API + self.valves.OM_API_ENDPOINT
-        headers = {"Authorization": f"Bearer {self.valves.OM_JWT_TOKEN"},"Content-Type": "application/json"} 
+        headers = {"Authorization": f"Bearer {self.valves.OM_JWT_TOKEN}","Content-Type": "application/json"} 
         raw_tables = await fetch_all_tables(table_endpoint, headers, limit=100)
 
         # 3) Parse into TextNode chunks
