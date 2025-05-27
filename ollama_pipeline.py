@@ -112,7 +112,7 @@ class Pipeline:
         raw_tables = await fetch_all_tables(table_endpoint, headers, limit=100)
 
         # 3) Parse into TextNode chunks
-        nodes = parse_tables_to_text_nodes(raw_tables)
+        nodes = parse_tables_to_nodes(raw_tables)
 
         # 4) Build index directly from TextNodes
         self.index = VectorStoreIndex(nodes)
