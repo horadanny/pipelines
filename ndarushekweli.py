@@ -1,3 +1,12 @@
+"""
+title: Llama Index ↔ OpenMetadata RAG Pipeline
+author: open-webui (refactor)
+date: 2025-05-15
+version: 1.4
+license: MIT
+description: A pipeline for RAG over OpenMetadata using Llama Index + Ollama.
+requirements: logging, pydantic, typing
+"""
 from typing import List, Optional
 from pydantic import BaseModel
 import requests
