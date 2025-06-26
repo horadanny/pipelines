@@ -54,7 +54,8 @@ class Pipeline:
             response = requests.post(
                 self.valves.CHATBOT_API,
                 json=payload,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
+                trust_env=False,
             )
             
             # Log the full response for debugging
