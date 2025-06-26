@@ -5,7 +5,7 @@ date: 2025-05-15
 version: 1.4
 license: MIT
 description: A pipeline for RAG over OpenMetadata using Llama Index + Ollama.
-requirements: logging, pydantic, typing
+requirements: pydantic
 """
 from typing import List, Optional
 from pydantic import BaseModel
@@ -54,7 +54,8 @@ class Pipeline:
             response = requests.post(
                 self.valves.CHATBOT_API,
                 json=payload,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
+                trust_env=False,
             )
             
             # Log the full response for debugging
@@ -77,12 +78,3 @@ class Pipeline:
             if hasattr(e, 'response') and e.response:
                 logging.error(f"Error details: {e.response.text}")
             return "Error: Unable to process the request."
-
-# Example usage
-#if __name__ == "__main__":
-    #pipeline = Pipeline()
-    #result = pipeline.pipe(
-        #user_message="What databases present?",
-        #model_id=""  # Optional if your server doesn't require it
-    #)
-    #print(result)
