@@ -16,7 +16,7 @@ class Pipeline:
             "CHATBOT_API": os.getenv(
                 "CHATBOT_API",
                 # match service port 80 and service name
-                "http://chatbot-service.openwebui.svc.cluster.local/v1/chat/completions"
+                "http://chatbot.openwebui.svc.cluster.local:8181/v1/chat/completions"
             ),
         }
         self.name = "visionr"
