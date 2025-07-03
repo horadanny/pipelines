@@ -22,7 +22,7 @@ class Pipeline:
     def __init__(self):
         env = {
             "CHATBOT_API": os.getenv(
-                "CHATBOT_API", "http://chatbot.openwebui.svc.cluster.local:8000/v1/chat/completions"
+                "CHATBOT_API", "http://chatbot-service.openwebui.svc.cluster.local:8000/v1/chat/completions"
                 ),
         }
         self.name = "visionr"
